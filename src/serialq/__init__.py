@@ -213,14 +213,20 @@ def run_child(cmd, log_path=None, kill_after=None, forward_signals=False):
             start_new_session=True,
         )
     except FileNotFoundError:
+        msg = f"failed to start: {cmd[0]}: command not found"
         if log:
-            log.write(f"# failed to start: {cmd[0]}: command not found\n")
+            log.write(f"# {msg}\n")
             log.close()
+        else:
+            print(f"serialq: error: {msg}", file=sys.stderr)
         return 127, False
     except OSError as e:
+        msg = f"failed to start: {e}"
         if log:
-            log.write(f"# failed to start: {e}\n")
+            log.write(f"# {msg}\n")
             log.close()
+        else:
+            print(f"serialq: error: {msg}", file=sys.stderr)
         return 126, False
 
     relay = {}
