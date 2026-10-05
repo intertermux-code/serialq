@@ -1,5 +1,7 @@
 # serialq
 
+[![ci](https://github.com/intertermux-code/serialq/actions/workflows/ci.yml/badge.svg)](https://github.com/intertermux-code/serialq/actions)
+
 One-at-a-time execution. A cross-process serial gate plus a persistent FIFO
 job queue, for CLIs and APIs that must never run concurrently.
 
@@ -10,7 +12,7 @@ don't coordinate, and "just be careful" stops working at 3am. serialq is
 the bouncer: whoever holds the gate is the only thing running.
 
 ```sh
-pip install serialq
+pip install git+https://github.com/intertermux-code/serialq.git
 
 # ad-hoc: blocks until the gate is free, then runs
 serialq run --gate qwen -- my-llm-cli ask "summarize this thread"
