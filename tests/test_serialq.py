@@ -42,6 +42,7 @@ def test_run_exit_code(sq):
 def test_run_missing_command(sq):
     r = sq("run", "--", "definitely-not-a-real-binary-xyz")
     assert r.returncode == 127
+    assert "command not found" in r.stderr
 
 
 def test_gate_serializes(sq):
