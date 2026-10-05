@@ -1,0 +1,13 @@
+[Unit]
+Description=serialq worker for gate %i
+After=network.target
+
+[Service]
+Type=simple
+# %i is the gate name: systemctl --user enable serialq-worker@qwen
+ExecStart=%h/.local/bin/serialq worker --gate %i
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=default.target
