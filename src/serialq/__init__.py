@@ -511,7 +511,7 @@ def cmd_status(args):
     held = not gate.try_acquire()
     if not held:
         gate.release()
-    counts = {"queued": 0, "running": 0, "done": 0, "failed": 0, "cancelled": 0}
+    counts = {}
     running_id = None
 
     def _count(jobs):
@@ -525,8 +525,10 @@ def cmd_status(args):
     with_jobs(paths, _count)
     running_id = nonlocal_running[0]
     print(f"gate {args.gate!r}: {'BUSY' if held else 'free'}")
-    print(f"queued={counts['queued']} running={counts['running']} "
-          f"done={counts['done']} failed={counts['failed']} cancelled={counts['cancelled']}")
+    order = ["queued", "running", "done", "failed", "cancelled"]
+    parts = [f"{s}={counts.get(s, 0)}" for s in order]
+    parts += [f"{s}={c}" for s, c in sorted(counts.items()) if s not in order]
+    print(" ".join(parts))
     if running_id:
         print(f"running job: {running_id}")
 
